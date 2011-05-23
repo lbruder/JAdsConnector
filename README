@@ -1,0 +1,50 @@
+Copyright (c) 2011, Leif Bruder <leifbruder@googlemail.com>
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+
+Beckhoff PLC driver for Java 0.1
+================================
+This package provides a simple way to access Beckhoff PLCs via the AMS/ADS
+protocol from pure Java. Variables on the PLC can be read and written,
+and notifications can be used to have the PLC inform the Java program
+of changes asynchronously. Symbol information is read from a TPY file
+as provided by the Beckhoff system.
+
+This code is by no means complete. It started as an experiment, when I
+had to create a similar library for my employer, but could not implement
+some of the ideas I had in mind. This stuff was written in my spare
+time and has NO connection to the code I wrote at work -- this is a
+Pure-Java project, whereas the code written for my employer was a Scheme
+library. Having read "Clean Code" a while ago, I wanted to try some of
+the principles detailed there, and this code base is my playground. Still
+trying to get into the Test First mentality...
+
+This code is based on the freely accessible Beckhof Information System
+only.  I go to great lengths to keep it free from any commercial claims,
+especially by my employer. I don't have a Beckhoff PLC or a Windows PC
+for that matter, so I can NOT test the code, as testing at work would make
+it my employer's property. So I have to rely on unit tests at the moment.
+Do not except this code to work 100% correctly.
+
+Help wanted
+================================
+What I could use at this point:
+
+- TPY files provided without copyright or IP claims
+- Beta testers!
+- Ideas for additional functionality :)
+
+Please keep in mind that I want to keep this project under the ISC
+license, so I can not accept anything with a questionable IP background.
+
