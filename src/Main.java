@@ -23,8 +23,8 @@ public class Main implements VariableObserver {
 	}
 
 	public static void main(String args[]) throws Exception {
-		//final VariableLocator locator = new VariableLocator(
-		//		new VariableExpander(new TpyFile("Test.tpy")).getVariables());
+		// final VariableLocator locator = new VariableLocator(
+		// new VariableExpander(new TpyFile("Test.tpy")).getVariables());
 
 		// final InetAddress destIp = InetAddress.getByName("192.168.1.2");
 		// final String destNetId = "1.2.3.4.1.1";
@@ -35,7 +35,8 @@ public class Main implements VariableObserver {
 		// System.out.println("Connection established");
 		//
 		// System.out.println("PLC device version: " + conn.getDeviceVersion());
-		// System.out.println("Reading a variable: " + conn.getVariableAsInteger(".variable.name"));
+		// System.out.println("Reading a variable: " +
+		// conn.getVariableAsInteger(".variable.name"));
 		//
 		// conn.close();
 	}

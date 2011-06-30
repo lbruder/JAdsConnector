@@ -12,7 +12,9 @@
 // ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
+package org.lb.plc.tpy;
 
+@SuppressWarnings("serial")
 public class TpyException extends Exception {
 	private final String message;
 

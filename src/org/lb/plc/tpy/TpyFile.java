@@ -12,6 +12,7 @@
 // ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
+package org.lb.plc.tpy;
 
 import java.io.*;
 import java.util.*;
@@ -51,8 +52,7 @@ public class TpyFile {
 		}
 	}
 
-	private Map<String, Type> getTypes(final Document doc)
-			throws TpyException {
+	private Map<String, Type> getTypes(final Document doc) throws TpyException {
 		final Map<String, Type> ret = new HashMap<String, Type>();
 
 		final Node root = getSingleChildNodeByName(doc, "PlcProjectInfo");
@@ -109,8 +109,8 @@ public class TpyFile {
 			throws TpyException {
 		final long lowerBound = getLowerBoundFromNode(arrayInfo);
 		final long upperBound = getUpperBoundFromNode(arrayInfo, lowerBound);
-		return new OneDimensionalArrayType(name, Long.valueOf(bitSize),
-				type, lowerBound, upperBound);
+		return new OneDimensionalArrayType(name, Long.valueOf(bitSize), type,
+				lowerBound, upperBound);
 	}
 
 	private Type makeTwoDimensionalArrayType(final String name,
@@ -120,8 +120,8 @@ public class TpyFile {
 		final long lowerBound2 = getLowerBoundFromNode(arrayInfo2);
 		final long upperBound1 = getUpperBoundFromNode(arrayInfo1, lowerBound1);
 		final long upperBound2 = getUpperBoundFromNode(arrayInfo2, lowerBound2);
-		return new TwoDimensionalArrayType(name, Long.valueOf(bitSize),
-				type, lowerBound1, upperBound1, lowerBound2, upperBound2);
+		return new TwoDimensionalArrayType(name, Long.valueOf(bitSize), type,
+				lowerBound1, upperBound1, lowerBound2, upperBound2);
 	}
 
 	private long getLowerBoundFromNode(final Node arrayInfo)
@@ -137,8 +137,7 @@ public class TpyFile {
 		return lowerBound + numberOfElements - 1;
 	}
 
-	private List<Variable> getVariables(final Document doc)
-			throws TpyException {
+	private List<Variable> getVariables(final Document doc) throws TpyException {
 		final List<Variable> ret = new LinkedList<Variable>();
 
 		final Node root = getSingleChildNodeByName(doc, "PlcProjectInfo");

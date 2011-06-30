@@ -12,12 +12,13 @@
 // ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
+package org.lb.plc.tpy;
 
 public final class StructItem extends Type {
 	public final long bitOffset;
 
-	public StructItem(final String name, final String type,
-			final long bitSize, final long bitOffset) {
+	public StructItem(final String name, final String type, final long bitSize,
+			final long bitOffset) {
 		super(name, type, bitSize);
 		this.bitOffset = bitOffset;
 		ensureValid();

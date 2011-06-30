@@ -12,6 +12,7 @@
 // ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
+package org.lb.plc.ams;
 
 import java.io.*;
 import java.net.*;
@@ -30,7 +31,8 @@ public class Connection {
 		this.in = socket.getInputStream();
 		this.out = socket.getOutputStream();
 		try {
-			Thread.sleep(100); // Wait for socket to settle. TODO: Needed (cf. continue in readEx...)?
+			Thread.sleep(100); // Wait for socket to settle. TODO: Needed (cf.
+								// continue in readEx...)?
 		} catch (InterruptedException ex) {
 			// Swallow for now
 		}
@@ -43,7 +45,7 @@ public class Connection {
 	public boolean isClosed() {
 		return socket.isClosed();
 	}
-	
+
 	public void write(Packet data) throws IOException {
 		out.write(data.toBinary());
 	}

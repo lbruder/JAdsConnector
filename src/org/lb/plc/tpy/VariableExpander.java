@@ -12,6 +12,7 @@
 // ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
+package org.lb.plc.tpy;
 
 import java.util.*;
 
@@ -43,8 +44,8 @@ public final class VariableExpander {
 			for (final StructItem subItem : ((StructType) type).subItems) {
 				final String subName = var.name + "." + subItem.name;
 				final long subOffset = var.offset + subItem.bitOffset / 8;
-				addSubVariables(new Variable(subName, subItem.type,
-						var.group, subOffset, subItem.bitSize));
+				addSubVariables(new Variable(subName, subItem.type, var.group,
+						subOffset, subItem.bitSize));
 			}
 		} else if (type instanceof OneDimensionalArrayType) {
 			final OneDimensionalArrayType arrayType = (OneDimensionalArrayType) type;
