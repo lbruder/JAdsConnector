@@ -37,6 +37,7 @@ for that matter, so I can NOT test the code, as testing at work would make
 it my employer's property. So I have to rely on unit tests at the moment.
 Do not except this code to work 100% correctly.
 
+
 Help wanted
 ================================
 What I could use at this point:
@@ -47,4 +48,29 @@ What I could use at this point:
 
 Please keep in mind that I want to keep this project under the ISC
 license, so I can not accept anything with a questionable IP background.
+
+
+TODO
+================================
+- Test double/float conversion
+- Unit tests in general
+- Writing variables as laid out in the code
+- Implement notification handling
+- Read/Write multiple variables with a single AMS roundtrip
+- Notifications on variable blocks (= multiple variables observed
+  with a single notification)
+- Retrieve TPY file from FTP server on the PLC
+- TPY watchdog: TPY file matches project? If not, disconnect immediately
+  to prevent damage due to writing to wrong addresses
+- Connection watchdog to re-open connections if broken
+- Find an actual PLC to test and fix bugs without IP attached
+
+
+Future plans:
+================================
+- RESTful interface for AJAX :) Semi-asynchronous notification handling
+  (HTML query: Retrieve notifications that arrived since id xxx, wait
+  for max n seconds if none yet)
+- Client/Server functionality for high-speed access from C, Perl,
+  Python...
 
