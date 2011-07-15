@@ -373,9 +373,59 @@ public class TestToolbox {
 		}
 	}
 
+	@Test
+	public void testBytesToSint32Positive() throws Exception {
+		Assert.assertEquals(
+				2147483646,
+				Toolbox.bytesToSint32(new byte[] { (byte) 254, (byte) 255,
+						(byte) 255, 127 }, 0));
+	}
+
+	@Test
+	public void testBytesToSint32PositiveWithOffset() throws Exception {
+		Assert.assertEquals(
+				2147483646,
+				Toolbox.bytesToSint32(new byte[] { 1, 2, 3, (byte) 254,
+						(byte) 255, (byte) 255, 127 }, 3));
+	}
+
+	@Test
+	public void testBytesToSint32Border() throws Exception {
+		Assert.assertEquals(
+				2147483647,
+				Toolbox.bytesToSint32(new byte[] { (byte) 255, (byte) 255,
+						(byte) 255, 127 }, 0));
+	}
+
+	@Test
+	public void testBytesToSint32Negative() throws Exception {
+		Assert.assertEquals(-2147483648,
+				Toolbox.bytesToSint32(new byte[] { 0, 0, 0, (byte) 128 }, 0));
+	}
+
+	@Test
+	public void testBytesToSint32InvalidOffset() throws Exception {
+		try {
+			Toolbox.bytesToSint32(new byte[] { 1, 2, 3, 4, 5 }, -1);
+			Assert.fail();
+		} catch (Exception ex) {
+		}
+
+		try {
+			Toolbox.bytesToSint32(new byte[] { 1, 2, 3, 4, 5 }, 2);
+			Assert.fail();
+		} catch (Exception ex) {
+		}
+
+		try {
+			Toolbox.bytesToSint32(new byte[] { 1, 2, 3, 4, 5 }, 12);
+			Assert.fail();
+		} catch (Exception ex) {
+		}
+	}
+
 	// TODO
 
-	// public static long bytesToSint32(final byte[] data, final int start)
 	// public static double bytesToDouble(final byte[] data)
 	// public static long bytesToSignedInteger(byte[] data)
 	// public static long bytesToUnsignedInteger(byte[] data)
