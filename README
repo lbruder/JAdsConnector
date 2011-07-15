@@ -54,6 +54,7 @@ TODO
 ================================
 - Test double/float conversion
 - Unit tests in general
+- Support ENUM data type in TPY files
 - Writing variables as laid out in the code
 - Implement notification handling
 - Read/Write multiple variables with a single AMS roundtrip
