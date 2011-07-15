@@ -77,13 +77,13 @@ public class TestToolbox {
 
 	@Test
 	public void testInt16ToBytesPositive() throws Exception {
-		Assert.assertArrayEquals(new byte[] { 33, 3 }, Toolbox
-				.int16ToBytes(801));
+		Assert.assertArrayEquals(new byte[] { 33, 3 },
+				Toolbox.int16ToBytes(801));
 	}
 
 	public void testInt16ToBytesUpperBoundary() throws Exception {
-		Assert.assertArrayEquals(new byte[] { (byte) 255, 127 }, Toolbox
-				.int16ToBytes(32767));
+		Assert.assertArrayEquals(new byte[] { (byte) 255, 127 },
+				Toolbox.int16ToBytes(32767));
 		try {
 			Toolbox.int16ToBytes(32768);
 			Assert.fail();
@@ -93,14 +93,14 @@ public class TestToolbox {
 
 	@Test
 	public void testInt16ToBytesNegative() throws Exception {
-		Assert.assertArrayEquals(new byte[] { (byte) 254, (byte) 255 }, Toolbox
-				.int16ToBytes(-2));
+		Assert.assertArrayEquals(new byte[] { (byte) 254, (byte) 255 },
+				Toolbox.int16ToBytes(-2));
 	}
 
 	@Test
 	public void testInt16ToBytesLowerBoundary() throws Exception {
-		Assert.assertArrayEquals(new byte[] { 0, (byte) 128 }, Toolbox
-				.int16ToBytes(-32768));
+		Assert.assertArrayEquals(new byte[] { 0, (byte) 128 },
+				Toolbox.int16ToBytes(-32768));
 		try {
 			Toolbox.int16ToBytes(-32769);
 			Assert.fail();
@@ -110,14 +110,14 @@ public class TestToolbox {
 
 	@Test
 	public void testUint16ToBytesNormal() throws Exception {
-		Assert.assertArrayEquals(new byte[] { 33, 3 }, Toolbox
-				.uint16ToBytes(801));
+		Assert.assertArrayEquals(new byte[] { 33, 3 },
+				Toolbox.uint16ToBytes(801));
 	}
 
 	@Test
 	public void testUint16ToBytesUpperBoundary() throws Exception {
-		Assert.assertArrayEquals(new byte[] { (byte) 255, (byte) 255 }, Toolbox
-				.uint16ToBytes(65535));
+		Assert.assertArrayEquals(new byte[] { (byte) 255, (byte) 255 },
+				Toolbox.uint16ToBytes(65535));
 		try {
 			Toolbox.uint16ToBytes(65536);
 			Assert.fail();
@@ -159,8 +159,8 @@ public class TestToolbox {
 
 	@Test
 	public void testInt32ToBytesLowerBoundary() throws Exception {
-		Assert.assertArrayEquals(new byte[] { 0, 0, 0, (byte) 128 }, Toolbox
-				.int32ToBytes(-2147483648));
+		Assert.assertArrayEquals(new byte[] { 0, 0, 0, (byte) 128 },
+				Toolbox.int32ToBytes(-2147483648));
 		try {
 			Toolbox.int32ToBytes(-2147483649L);
 			Assert.fail();
@@ -187,8 +187,8 @@ public class TestToolbox {
 
 	@Test
 	public void testUint32ToBytesLowerBoundary() throws Exception {
-		Assert.assertArrayEquals(new byte[] { 0, 0, 0, 0 }, Toolbox
-				.uint32ToBytes(0));
+		Assert.assertArrayEquals(new byte[] { 0, 0, 0, 0 },
+				Toolbox.uint32ToBytes(0));
 		try {
 			Toolbox.uint32ToBytes(-1);
 			Assert.fail();
@@ -223,17 +223,23 @@ public class TestToolbox {
 
 	@Test
 	public void testBytesToUint32Normal() throws Exception {
-		Assert.assertEquals(1234567890, Toolbox.bytesToUint32(new byte[] { 1,
-				2, (byte) 210, 2, (byte) 150, 73, 3, 4 }, 2));
+		Assert.assertEquals(
+				1234567890,
+				Toolbox.bytesToUint32(new byte[] { 1, 2, (byte) 210, 2,
+						(byte) 150, 73, 3, 4 }, 2));
 	}
 
 	@Test
 	public void testBytesToUint32LowerBoundary() throws Exception {
-		Assert.assertEquals(1234567890, Toolbox.bytesToUint32(new byte[] {
-				(byte) 210, 2, (byte) 150, 73, 123, 21 }, 0));
+		Assert.assertEquals(
+				1234567890,
+				Toolbox.bytesToUint32(new byte[] { (byte) 210, 2, (byte) 150,
+						73, 123, 21 }, 0));
 		try {
-			Assert.assertEquals(1234567890, Toolbox.bytesToUint32(new byte[] {
-					(byte) 210, 2, (byte) 150, 73, 123, 21 }, -1));
+			Assert.assertEquals(
+					1234567890,
+					Toolbox.bytesToUint32(new byte[] { (byte) 210, 2,
+							(byte) 150, 73, 123, 21 }, -1));
 			Assert.fail();
 		} catch (Exception ex) {
 		}
@@ -241,14 +247,18 @@ public class TestToolbox {
 
 	@Test
 	public void testBytesToUint32UpperBoundary() throws Exception {
-		Assert.assertEquals(1234567890, Toolbox.bytesToUint32(new byte[] { 1,
-				2, (byte) 210, 2, (byte) 150, 73, 123, 21 }, 2));
+		Assert.assertEquals(
+				1234567890,
+				Toolbox.bytesToUint32(new byte[] { 1, 2, (byte) 210, 2,
+						(byte) 150, 73, 123, 21 }, 2));
 	}
 
 	@Test
 	public void testBytesToUint32MsbSet() throws Exception {
-		Assert.assertEquals(4294967295L, Toolbox.bytesToUint32(new byte[] {
-				(byte) 255, (byte) 255, (byte) 255, (byte) 255 }, 0));
+		Assert.assertEquals(
+				4294967295L,
+				Toolbox.bytesToUint32(new byte[] { (byte) 255, (byte) 255,
+						(byte) 255, (byte) 255 }, 0));
 	}
 
 	@Test
@@ -262,14 +272,14 @@ public class TestToolbox {
 
 	@Test
 	public void testBytesToUint16Normal() throws Exception {
-		Assert.assertEquals(801, Toolbox.bytesToUint16(new byte[] { 1, 2, 33,
-				3, 3, 4 }, 2));
+		Assert.assertEquals(801,
+				Toolbox.bytesToUint16(new byte[] { 1, 2, 33, 3, 3, 4 }, 2));
 	}
 
 	@Test
 	public void testBytesToUint16LowerBoundary() throws Exception {
-		Assert.assertEquals(801, Toolbox.bytesToUint16(new byte[] { 33, 3, 73,
-				123, 21 }, 0));
+		Assert.assertEquals(801,
+				Toolbox.bytesToUint16(new byte[] { 33, 3, 73, 123, 21 }, 0));
 		try {
 			Assert.assertEquals(801, Toolbox.bytesToUint16(new byte[] { 33, 3,
 					73, 123, 21 }, -1));
@@ -280,14 +290,14 @@ public class TestToolbox {
 
 	@Test
 	public void testBytesToUint16UpperBoundary() throws Exception {
-		Assert.assertEquals(801, Toolbox.bytesToUint16(new byte[] { 1, 2, 3, 4,
-				5, 33, 3 }, 5));
+		Assert.assertEquals(801,
+				Toolbox.bytesToUint16(new byte[] { 1, 2, 3, 4, 5, 33, 3 }, 5));
 	}
 
 	@Test
 	public void testBytesToUint16MsbSet() throws Exception {
-		Assert.assertEquals(65535, Toolbox.bytesToUint16(new byte[] {
-				(byte) 255, (byte) 255 }, 0));
+		Assert.assertEquals(65535,
+				Toolbox.bytesToUint16(new byte[] { (byte) 255, (byte) 255 }, 0));
 	}
 
 	@Test
@@ -318,9 +328,53 @@ public class TestToolbox {
 		Assert.assertEquals(expected, actual);
 	}
 
+	@Test
+	public void testBytesToSint16Positive() throws Exception {
+		Assert.assertEquals(32766,
+				Toolbox.bytesToSint16(new byte[] { (byte) 254, 127 }, 0));
+	}
+
+	@Test
+	public void testBytesToSint16PositiveWithOffset() throws Exception {
+		Assert.assertEquals(32766, Toolbox.bytesToSint16(new byte[] { 1, 2, 3,
+				(byte) 254, 127 }, 3));
+	}
+
+	@Test
+	public void testBytesToSint16Border() throws Exception {
+		Assert.assertEquals(32767,
+				Toolbox.bytesToSint16(new byte[] { (byte) 255, 127 }, 0));
+	}
+
+	@Test
+	public void testBytesToSint16Negative() throws Exception {
+		Assert.assertEquals(-32768,
+				Toolbox.bytesToSint16(new byte[] { 0, (byte) 128 }, 0));
+	}
+
+	@Test
+	public void testBytesToSint16InvalidOffset() throws Exception {
+		try {
+			Toolbox.bytesToSint16(new byte[] { 1, 2, 3, 4, 5 }, -1);
+			Assert.fail();
+		} catch (Exception ex) {
+		}
+
+		try {
+			Toolbox.bytesToSint16(new byte[] { 1, 2, 3, 4, 5 }, 4);
+			Assert.fail();
+		} catch (Exception ex) {
+		}
+
+		try {
+			Toolbox.bytesToSint16(new byte[] { 1, 2, 3, 4, 5 }, 12);
+			Assert.fail();
+		} catch (Exception ex) {
+		}
+	}
+
 	// TODO
 
-	// public static int bytesToSint16(final byte[] data, final int start)
 	// public static long bytesToSint32(final byte[] data, final int start)
 	// public static double bytesToDouble(final byte[] data)
 	// public static long bytesToSignedInteger(byte[] data)
