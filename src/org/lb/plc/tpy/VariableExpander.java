@@ -53,9 +53,10 @@ public final class VariableExpander {
 			final long subBitSize = (subTypeBitSizeFromName > 0) ? subTypeBitSizeFromName
 					: getTypeFromName(arrayType.type).bitSize;
 			final long subByteSize = subBitSize / 8;
-			for (long i = arrayType.lowerBound; i <= arrayType.upperBound; ++i) {
+			for (long i = arrayType.lowerBound, variableNumber = 0; i <= arrayType.upperBound; ++i, ++variableNumber) {
 				final String subName = var.name + "[" + i + "]";
-				final long subOffset = var.offset + i * subByteSize;
+				final long subOffset = variableNumber * subByteSize
+						+ var.offset;
 				addSubVariables(new Variable(subName, arrayType.type,
 						var.group, subOffset, subBitSize));
 			}
