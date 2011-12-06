@@ -65,6 +65,7 @@ TODO
   to prevent damage due to writing to wrong addresses
 - Connection watchdog to re-open connections if broken
 - Find an actual PLC to test and fix bugs without IP attached
+- CAVE: Word aligning on BX... systems, endianness for REAL values etc.
 
 
 Future plans:
