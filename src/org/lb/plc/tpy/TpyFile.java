@@ -14,20 +14,24 @@
 
 package org.lb.plc.tpy;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
-import javax.xml.parsers.*;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.w3c.dom.*;
 
-public class TpyFile {
-	public final Map<String, Type> types;
-	public final List<Variable> variables;
+public class TpyFile implements TypeInformationContainer {
+	private final Map<String, Type> types;
+	private final List<Variable> variables;
+	private Document doc;
 
 	public TpyFile(final String fileName) throws TpyException {
 		try {
-			final Document doc = parseFile(fileName);
-			this.types = getTypes(doc);
-			this.variables = getVariables(doc);
+			parseFile(fileName);
+			this.types = extractTypes();
+			this.variables = extractVariables();
 		} catch (TpyException ex) {
 			throw ex;
 		} catch (NumberFormatException ex) {
@@ -41,9 +45,9 @@ public class TpyFile {
 		}
 	}
 
-	private Document parseFile(final String fileName) throws TpyException {
+	private void parseFile(final String fileName) throws TpyException {
 		try {
-			return DocumentBuilderFactory.newInstance().newDocumentBuilder()
+			doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
 					.parse(new File(fileName));
 		} catch (IOException ex) {
 			throw new TpyException("Error reading TPY file");
@@ -52,7 +56,7 @@ public class TpyFile {
 		}
 	}
 
-	private Map<String, Type> getTypes(final Document doc) throws TpyException {
+	private Map<String, Type> extractTypes() throws TpyException {
 		final Map<String, Type> ret = new HashMap<String, Type>();
 
 		final Node root = getSingleChildNodeByName(doc, "PlcProjectInfo");
@@ -71,11 +75,13 @@ public class TpyFile {
 			} else if (arrayInfo.size() > 0) {
 				final String type = getTextOfChildNodeByName(dataType, "Type");
 				if (arrayInfo.size() == 1)
-					ret.put(name, makeOneDimensionalArrayType(name, bitSize,
-							type, arrayInfo.get(0)));
+					ret.put(name,
+							makeOneDimensionalArrayType(name, bitSize, type,
+									arrayInfo.get(0)));
 				else if (arrayInfo.size() == 2)
-					ret.put(name, makeTwoDimensionalArrayType(name, bitSize,
-							type, arrayInfo.get(0), arrayInfo.get(1)));
+					ret.put(name,
+							makeTwoDimensionalArrayType(name, bitSize, type,
+									arrayInfo.get(0), arrayInfo.get(1)));
 				else
 					throw new IllegalArgumentException(
 							"Arrays with more than two dimensions not supported");
@@ -88,7 +94,7 @@ public class TpyFile {
 		return ret;
 	}
 
-	private Type makeStructType(final String name, final String bitSize,
+	private static Type makeStructType(final String name, final String bitSize,
 			final List<Node> subItems) throws TpyException {
 		final List<StructItem> structItems = new LinkedList<StructItem>();
 		for (final Node subItem : subItems) {
@@ -104,7 +110,7 @@ public class TpyFile {
 		return new StructType(name, Long.valueOf(bitSize), structItems);
 	}
 
-	private Type makeOneDimensionalArrayType(final String name,
+	private static Type makeOneDimensionalArrayType(final String name,
 			final String bitSize, final String type, final Node arrayInfo)
 			throws TpyException {
 		final long lowerBound = getLowerBoundFromNode(arrayInfo);
@@ -113,7 +119,7 @@ public class TpyFile {
 				lowerBound, upperBound);
 	}
 
-	private Type makeTwoDimensionalArrayType(final String name,
+	private static Type makeTwoDimensionalArrayType(final String name,
 			final String bitSize, final String type, final Node arrayInfo1,
 			final Node arrayInfo2) throws TpyException {
 		final long lowerBound1 = getLowerBoundFromNode(arrayInfo1);
@@ -124,20 +130,20 @@ public class TpyFile {
 				lowerBound1, upperBound1, lowerBound2, upperBound2);
 	}
 
-	private long getLowerBoundFromNode(final Node arrayInfo)
+	private static long getLowerBoundFromNode(final Node arrayInfo)
 			throws TpyException {
 		final String lBound = getTextOfChildNodeByName(arrayInfo, "LBound");
 		return Long.valueOf(lBound);
 	}
 
-	private long getUpperBoundFromNode(final Node arrayInfo,
+	private static long getUpperBoundFromNode(final Node arrayInfo,
 			final long lowerBound) throws TpyException {
 		final String elements = getTextOfChildNodeByName(arrayInfo, "Elements");
 		final long numberOfElements = Long.valueOf(elements);
 		return lowerBound + numberOfElements - 1;
 	}
 
-	private List<Variable> getVariables(final Document doc) throws TpyException {
+	private List<Variable> extractVariables() throws TpyException {
 		final List<Variable> ret = new LinkedList<Variable>();
 
 		final Node root = getSingleChildNodeByName(doc, "PlcProjectInfo");
@@ -157,14 +163,14 @@ public class TpyFile {
 		return ret;
 	}
 
-	private Node getSingleChildNodeByName(final Node node, final String name)
-			throws TpyException {
+	private static Node getSingleChildNodeByName(final Node node,
+			final String name) throws TpyException {
 		final List<Node> nodesWithThatName = getChildNodesByName(node, name);
 		assertExactlyOneNode(nodesWithThatName);
 		return nodesWithThatName.get(0);
 	}
 
-	private void assertExactlyOneNode(final List<Node> nodes)
+	private static void assertExactlyOneNode(final List<Node> nodes)
 			throws TpyException {
 		final String nodeName = nodes.get(0).getNodeName();
 		if (nodes.size() == 0)
@@ -175,7 +181,8 @@ public class TpyFile {
 					+ "> nodes found");
 	}
 
-	private List<Node> getChildNodesByName(final Node node, final String name) {
+	private static List<Node> getChildNodesByName(final Node node,
+			final String name) {
 		final List<Node> ret = new LinkedList<Node>();
 		final NodeList children = node.getChildNodes();
 		for (int i = 0; i < children.getLength(); ++i)
@@ -184,8 +191,18 @@ public class TpyFile {
 		return ret;
 	}
 
-	private String getTextOfChildNodeByName(final Node node, final String name)
-			throws TpyException {
+	private static String getTextOfChildNodeByName(final Node node,
+			final String name) throws TpyException {
 		return getSingleChildNodeByName(node, name).getTextContent();
+	}
+
+	@Override
+	public Map<String, Type> getTypes() {
+		return Collections.unmodifiableMap(types);
+	}
+
+	@Override
+	public List<Variable> getVariables() {
+		return Collections.unmodifiableList(variables);
 	}
 }

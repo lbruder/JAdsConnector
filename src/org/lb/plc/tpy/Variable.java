@@ -45,6 +45,8 @@ public class Variable {
 	}
 
 	public boolean isSigned() {
+		if (type.equals("SINT"))
+			return true;
 		if (type.equals("INT"))
 			return true;
 		if (type.equals("DINT"))
