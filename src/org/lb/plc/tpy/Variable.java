@@ -54,6 +54,44 @@ public class Variable {
 		return false;
 	}
 
+	public boolean isIntegral() {
+		if (name.equals("BOOL"))
+			return true;
+		if (name.equals("BYTE"))
+			return true;
+		if (name.equals("USINT"))
+			return true;
+		if (name.equals("SINT"))
+			return true;
+		if (name.equals("INT"))
+			return true;
+		if (name.equals("UINT"))
+			return true;
+		if (name.equals("WORD"))
+			return true;
+		if (name.equals("DWORD"))
+			return true;
+		if (name.equals("DINT"))
+			return true;
+		if (name.equals("UDINT"))
+			return true;
+		if (name.equals("TIME"))
+			return true;
+		return false;
+	}
+
+	public boolean isFloatingPoint() {
+		if (name.equals("REAL"))
+			return true;
+		if (name.equals("LREAL"))
+			return true;
+		return false;
+	}
+
+	public boolean isString() {
+		return name.startsWith("STRING");
+	}
+
 	@Override
 	public String toString() {
 		return String.format("{'%s': '%s' Group: %d Offset: %d BitSize: %d}",

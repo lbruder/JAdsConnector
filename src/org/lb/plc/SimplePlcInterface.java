@@ -17,15 +17,20 @@ package org.lb.plc;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Map;
-import org.lb.plc.ams.*;
+
+import org.lb.plc.ams.AmsException;
+import org.lb.plc.ams.NotificationObserver;
 import org.lb.plc.tpy.*;
 
 public class SimplePlcInterface {
 	private final SimpleAdsInterface conn;
 	private final VariableLocator variableLocator;
-	private final VariableObserver observer;
+	final VariableObserver observer;
 
 	private class Observer implements NotificationObserver {
+		public Observer() {
+		}
+
 		@Override
 		public void notificationReceived(Map<Long, byte[]> newValues) {
 			if (observer == null)
@@ -61,7 +66,7 @@ public class SimplePlcInterface {
 	public long getVariableAsInteger(final String name) throws IOException,
 			AmsException, TpyException {
 		Variable var = variableLocator.getVariableByName(name);
-		byte[] data = readByName(name);
+		final byte[] data = readByName(name);
 		if (var.isSigned())
 			return Toolbox.bytesToSignedInteger(data);
 		return Toolbox.bytesToUnsignedInteger(data);
@@ -83,21 +88,36 @@ public class SimplePlcInterface {
 		return conn.read(var.group, var.offset, var.bitSize / 8);
 	}
 
-	// public void setVariableAsInteger(final String name, final long value)
-	// throws IOException, AmsException {
-	// // TODO
-	// }
-	//
-	// public void setVariableAsDouble(final String name, final double value)
-	// throws IOException, AmsException {
-	// // TODO
-	// }
-	//
-	// public void setVariableAsString(final String name, final String value)
-	// throws IOException, AmsException {
-	// // TODO
-	// }
-	//
+	public void setVariable(final String name, final long value)
+			throws IOException, AmsException, TpyException {
+		final Variable var = variableLocator.getVariableByName(name);
+		if (!var.isIntegral())
+			throw new TpyException("Invalid data type, got <integral>");
+		final int byteSize = (int) var.bitSize / 8;
+		final byte[] data = Toolbox.integerToBytes(value, byteSize,
+				var.isSigned());
+		conn.write(var.group, var.offset, data);
+	}
+
+	public void setVariable(final String name, final double value)
+			throws IOException, AmsException, TpyException {
+		final Variable var = variableLocator.getVariableByName(name);
+		if (!var.isFloatingPoint())
+			throw new TpyException("Invalid data type, got <floatingPoint>");
+		final int byteSize = (int) var.bitSize / 8;
+		final byte[] data = Toolbox.doubleToBytes(value, byteSize);
+		conn.write(var.group, var.offset, data);
+	}
+
+	public void setVariable(final String name, final String value)
+			throws IOException, AmsException, TpyException {
+		final Variable var = variableLocator.getVariableByName(name);
+		if (!var.isString())
+			throw new TpyException("Invalid data type, got <floatingString>");
+		final byte[] data = value.getBytes();
+		conn.write(var.group, var.offset, data);
+	}
+
 	// public void addNotification(final String name, final long checkTimeInMs)
 	// throws IOException, AmsException {
 	// // TODO

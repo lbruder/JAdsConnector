@@ -14,17 +14,18 @@
 
 package org.lb.plc.ams;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.*;
 
-import org.lb.plc.ads.*;
+import org.lb.plc.ads.DeviceNotification;
+import org.lb.plc.ads.Payload;
 
 public class SyncConnection {
-	private final Connection conn;
-	private final BlockingQueue<Packet> dataQueue;
-	private final BlockingQueue<Packet> notificationQueue;
-	private final Packet nullPacket;
+	final Connection conn;
+	final BlockingQueue<Packet> dataQueue;
+	final BlockingQueue<Packet> notificationQueue;
+	final Packet nullPacket;
 
 	public SyncConnection(final Connection conn,
 			final NotificationObserver observer) {
@@ -32,9 +33,9 @@ public class SyncConnection {
 		this.dataQueue = new LinkedBlockingQueue<Packet>();
 		this.notificationQueue = new LinkedBlockingQueue<Packet>();
 
-		this.nullPacket = Packet.newRequest(PeerPair.valueOf(new byte[] { 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0 }), 0, 0,
-				new org.lb.plc.ads.Payload() {
+		this.nullPacket = Packet.newRequest(
+				PeerPair.valueOf(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+						0, 0, 1, 0, 0 }), 0, 0, new org.lb.plc.ads.Payload() {
 					@Override
 					public int getCommandId() {
 						return 0;
@@ -82,6 +83,9 @@ public class SyncConnection {
 	}
 
 	private class ReaderThread implements Runnable {
+		public ReaderThread() {
+		}
+
 		@Override
 		public void run() {
 			for (;;) {

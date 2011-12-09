@@ -15,6 +15,7 @@
 package org.lb.plc.ams;
 
 import java.util.Arrays;
+
 import org.lb.plc.Toolbox;
 
 public class PeerPair {
@@ -63,7 +64,7 @@ public class PeerPair {
 					"Source and destination Net IDs must not be equal");
 	}
 
-	private void ensureValidPort(final int port) {
+	private static void ensureValidPort(final int port) {
 		if (port < 0)
 			throw new IllegalArgumentException("Invalid port number");
 		if (port > 65535)

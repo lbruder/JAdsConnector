@@ -171,4 +171,42 @@ public class Toolbox {
 					+ hexdump(data));
 		}
 	}
+
+	public static byte[] integerToBytes(long value, int byteSize, boolean signed) {
+		switch (byteSize) {
+		case 1:
+			return new byte[] { (byte) value };
+		case 2:
+			if (signed)
+				return Toolbox.int16ToBytes((int) value);
+			return Toolbox.uint16ToBytes((int) value);
+		case 4:
+			if (signed)
+				return Toolbox.int32ToBytes(value);
+			return Toolbox.uint32ToBytes(value);
+		default:
+			throw new IllegalArgumentException("Internal error: Bytesize "
+					+ byteSize + "not handled");
+		}
+	}
+
+	public static byte[] doubleToBytes(double value, int byteSize) {
+		switch (byteSize) {
+		case 4:
+			return Toolbox.floatToBytes((float) value);
+		case 8:
+			return Toolbox.doubleToBytes(value);
+		default:
+			throw new IllegalArgumentException("Internal error: Bytesize "
+					+ byteSize + "not handled");
+		}
+	}
+
+	public static byte[] floatToBytes(float value) {
+		return Toolbox.uint32ToBytes(Float.floatToIntBits(value));
+	}
+
+	public static byte[] doubleToBytes(double value) {
+		return Toolbox.uint32ToBytes(Double.doubleToLongBits(value));
+	}
 }

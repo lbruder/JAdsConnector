@@ -50,29 +50,50 @@ Please keep in mind that I want to keep this project under the ISC
 license, so I can not accept anything with a questionable IP background.
 
 
-TODO
+TODO for version 0.2
 ================================
-- Test double/float conversion
+- Complete Toolbox tests, esp. double/float conversion (see TestToolbox.java)
 - Unit tests in general
-- Support ENUM data type in TPY files
-- Writing variables as laid out in the code
+- Support ENUM data type in TPY files, map to integer
 - Implement notification handling
+=> First version that is actually useful
+
+
+TODO for version 0.3
+================================
+- Add support for two-dimensional arrays
 - Read/Write multiple variables with a single AMS roundtrip
 - Notifications on variable blocks (= multiple variables observed
   with a single notification)
+
+
+TODO for version 0.4
+================================
 - Retrieve TPY file from FTP server on the PLC
 - TPY watchdog: TPY file matches project? If not, disconnect immediately
   to prevent damage due to writing to wrong addresses
 - Connection watchdog to re-open connections if broken
-- Find an actual PLC to test and fix bugs without IP attached
-- CAVE: Word aligning on BX... systems, endianness for REAL values etc.
+
+TODO for version 0.5
+================================
+- Respect word aligning on BX... systems, endianness for REAL values etc.
 
 
-Future plans:
+TODO for version 0.6
+================================
+- Client/Server functionality for high-speed access from C, Perl, Python...
+
+
+TODO for version 0.7
 ================================
 - RESTful interface for AJAX :) Semi-asynchronous notification handling
   (HTML query: Retrieve notifications that arrived since id xxx, wait
   for max n seconds if none yet)
-- Client/Server functionality for high-speed access from C, Perl,
-  Python...
 
+
+TODO for version 0.8 = RC 1.0
+================================
+- Find someone and/or a PLC to test the system without IP attached
+- Test, test, test.
+- Fix bugs.
+- Release as V1.0

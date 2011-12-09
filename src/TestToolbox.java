@@ -429,4 +429,9 @@ public class TestToolbox {
 	// public static double bytesToDouble(final byte[] data)
 	// public static long bytesToSignedInteger(byte[] data)
 	// public static long bytesToUnsignedInteger(byte[] data)
+	// public static byte[] floatToBytes(float value)
+	// public static byte[] doubleToBytes(double value)
+	// public static byte[] integerToBytes(long value, int byteSize, boolean
+	// signed)
+	// public static byte[] doubleToBytes(double value, int byteSize)
 }
