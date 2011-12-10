@@ -30,7 +30,7 @@ library. Having read "Clean Code" a while ago, I wanted to try some of
 the principles detailed there, and this code base is my playground. Still
 trying to get into the Test First mentality...
 
-This code is based on the freely accessible Beckhof Information System
+This code is based on the freely accessible Beckhoff Information System
 only.  I go to great lengths to keep it free from any commercial claims,
 especially by my employer. I don't have a Beckhoff PLC or a Windows PC
 for that matter, so I can NOT test the code, as testing at work would make
@@ -73,6 +73,7 @@ TODO for version 0.4
 - TPY watchdog: TPY file matches project? If not, disconnect immediately
   to prevent damage due to writing to wrong addresses
 - Connection watchdog to re-open connections if broken
+
 
 TODO for version 0.5
 ================================
