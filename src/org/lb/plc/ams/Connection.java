@@ -14,8 +14,13 @@
 
 package org.lb.plc.ams;
 
-import java.io.*;
-import java.net.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.SocketTimeoutException;
+
 import org.lb.plc.Toolbox;
 
 public class Connection {
@@ -32,7 +37,7 @@ public class Connection {
 		this.out = socket.getOutputStream();
 		try {
 			Thread.sleep(100); // Wait for socket to settle. TODO: Needed (cf.
-								// continue in readEx...)?
+			// continue in readEx...)?
 		} catch (InterruptedException ex) {
 			// Swallow for now
 		}
@@ -55,6 +60,8 @@ public class Connection {
 			final byte[] tcpHeader = new byte[6];
 			readExactlyNBytes(tcpHeader, 0, 6);
 			final int packetSize = (int) Toolbox.bytesToUint32(tcpHeader, 2);
+			if (packetSize > 65535)
+				throw new IOException("Invalid AMS packet size");
 
 			final byte[] packet = new byte[6 + packetSize];
 			Toolbox.copyIntoByteArray(packet, 0, tcpHeader);
