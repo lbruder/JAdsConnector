@@ -12,7 +12,10 @@
 // ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.lb.plc.ams.NetId;
 
 public class TestAmsNetId {
@@ -76,6 +79,15 @@ public class TestAmsNetId {
 	public void testFromString() throws Exception {
 		NetId id = NetId.valueOf("1.2.3.4.5.6");
 		byte expected[] = new byte[] { 1, 2, 3, 4, 5, 6 };
+		byte actual[] = id.toBinary();
+		Assert.assertArrayEquals(expected, actual);
+	}
+
+	@Test
+	public void testFromStringBigValues() throws Exception {
+		NetId id = NetId.valueOf("128.129.130.131.132.133");
+		byte expected[] = new byte[] { (byte) 128, (byte) 129, (byte) 130,
+				(byte) 131, (byte) 132, (byte) 133 };
 		byte actual[] = id.toBinary();
 		Assert.assertArrayEquals(expected, actual);
 	}

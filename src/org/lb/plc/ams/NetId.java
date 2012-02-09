@@ -16,8 +16,10 @@ package org.lb.plc.ams;
 
 import java.util.Arrays;
 
+import org.lb.plc.Toolbox;
+
 public class NetId {
-	private final byte[] data;
+	private final int[] data;
 
 	public static NetId valueOf(final String value) {
 		final String[] values = value.split("\\.");
@@ -39,13 +41,11 @@ public class NetId {
 	public static NetId valueOf(final byte[] data) {
 		if (data.length != 6)
 			throw new IllegalArgumentException("Invalid data size");
-		final byte b1 = data[0];
-		final byte b2 = data[1];
-		final byte b3 = data[2];
-		final byte b4 = data[3];
-		final byte b5 = data[4];
-		final byte b6 = data[5];
-		return valueOf(b1, b2, b3, b4, b5, b6);
+		final int[] values = new int[6];
+		for (int i = 0; i < 6; ++i)
+			values[i] = Toolbox.toUnsigned(data[i]);
+		return valueOf(values[0], values[1], values[2], values[3], values[4],
+				values[5]);
 	}
 
 	private NetId(final int b1, final int b2, final int b3, final int b4,
@@ -56,8 +56,7 @@ public class NetId {
 		ensureValueFitsByteSize(b4);
 		ensureValueFitsByteSize(b5);
 		ensureValueFitsByteSize(b6);
-		data = new byte[] { (byte) b1, (byte) b2, (byte) b3, (byte) b4,
-				(byte) b5, (byte) b6 };
+		data = new int[] { b1, b2, b3, b4, b5, b6 };
 	}
 
 	private static void ensureValueFitsByteSize(final int value) {
@@ -68,7 +67,10 @@ public class NetId {
 	}
 
 	public byte[] toBinary() {
-		return data.clone();
+		byte[] ret = new byte[6];
+		for (int i = 0; i < 6; ++i)
+			ret[i] = (byte) data[i];
+		return ret;
 	}
 
 	@Override

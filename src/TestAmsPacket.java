@@ -12,9 +12,16 @@
 // ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-import org.junit.*;
-import org.lb.plc.ads.*;
-import org.lb.plc.ams.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.lb.plc.ads.GetDeviceInfoRequest;
+import org.lb.plc.ads.Payload;
+import org.lb.plc.ads.ReadWriteRequest;
+import org.lb.plc.ams.NetId;
+import org.lb.plc.ams.Packet;
+import org.lb.plc.ams.PeerPair;
 
 public class TestAmsPacket {
 	private NetId srcNetId;
@@ -24,7 +31,7 @@ public class TestAmsPacket {
 	@Before
 	public void setUp() throws Exception {
 		srcNetId = NetId.valueOf("1.2.3.4.5.6");
-		destNetId = NetId.valueOf("9.8.7.6.5.4");
+		destNetId = NetId.valueOf("128.129.130.131.132.133");
 		peers = PeerPair.valueOf(srcNetId, 128, destNetId, 801);
 	}
 
@@ -46,7 +53,8 @@ public class TestAmsPacket {
 			}
 		});
 		byte[] actual = packet.toBinary();
-		byte[] expected = new byte[] { 0, 0, 36, 0, 0, 0, 9, 8, 7, 6, 5, 4, 33,
+		byte[] expected = new byte[] { 0, 0, 36, 0, 0, 0, (byte) 128,
+				(byte) 129, (byte) 130, (byte) 131, (byte) 132, (byte) 133, 33,
 				3, 1, 2, 3, 4, 5, 6, (byte) 128, 0, 42, 0, 4, 0, 4, 0, 0, 0, 0,
 				0, 0, 0, 123, 0, 0, 0, 64, 65, 66, 67 };
 		Assert.assertArrayEquals(expected, actual);
@@ -74,7 +82,8 @@ public class TestAmsPacket {
 	public void testToString() throws Exception {
 		Packet packet = Packet.newRequest(peers, 0, 123, new ReadWriteRequest(
 				1000, 2000, new byte[] { 1, 2, 3, 4, 5 }, 123));
-		String expected = "AmsPacket: {1.2.3.4.5.6:128 -> 9.8.7.6.5.4:801}, "
+		String expected = "AmsPacket: "
+				+ "{1.2.3.4.5.6:128 -> 128.129.130.131.132.133:801}, "
 				+ "ErrorCode: 0, Id: 123, Payload: AdsReadWriteRequest: "
 				+ "Group 1000, Offset 2000, Read 123 bytes, "
 				+ "Write: [1, 2, 3, 4, 5]";
