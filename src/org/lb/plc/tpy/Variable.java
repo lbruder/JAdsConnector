@@ -1,4 +1,4 @@
-// Copyright (c) 2011, Leif Bruder <leifbruder@googlemail.com>
+// Copyright (c) 2011-2012, Leif Bruder <leifbruder@googlemail.com>
 // 
 // Permission to use, copy, modify, and/or distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -13,6 +13,8 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 package org.lb.plc.tpy;
+
+import org.lb.plc.Toolbox;
 
 public class Variable {
 	public final String name;
@@ -55,46 +57,62 @@ public class Variable {
 	}
 
 	public boolean isIntegral() {
-		if (name.equals("BOOL"))
+		if (type.equals("BOOL"))
 			return true;
-		if (name.equals("BYTE"))
+		if (type.equals("BYTE"))
 			return true;
-		if (name.equals("USINT"))
+		if (type.equals("USINT"))
 			return true;
-		if (name.equals("SINT"))
+		if (type.equals("SINT"))
 			return true;
-		if (name.equals("INT"))
+		if (type.equals("INT"))
 			return true;
-		if (name.equals("UINT"))
+		if (type.equals("UINT"))
 			return true;
-		if (name.equals("WORD"))
+		if (type.equals("WORD"))
 			return true;
-		if (name.equals("DWORD"))
+		if (type.equals("DWORD"))
 			return true;
-		if (name.equals("DINT"))
+		if (type.equals("DINT"))
 			return true;
-		if (name.equals("UDINT"))
+		if (type.equals("UDINT"))
 			return true;
-		if (name.equals("TIME"))
+		if (type.equals("TIME"))
 			return true;
 		return false;
 	}
 
 	public boolean isFloatingPoint() {
-		if (name.equals("REAL"))
+		if (type.equals("REAL"))
 			return true;
-		if (name.equals("LREAL"))
+		if (type.equals("LREAL"))
 			return true;
 		return false;
 	}
 
 	public boolean isString() {
-		return name.startsWith("STRING");
+		return type.startsWith("STRING");
 	}
 
 	@Override
 	public String toString() {
 		return String.format("{'%s': '%s' Group: %d Offset: %d BitSize: %d}",
 				name, type, group, offset, bitSize);
+	}
+
+	public Object decode(byte[] bytes) throws TpyException {
+		if (isString())
+			return new String(bytes);
+
+		if (isFloatingPoint())
+			return Toolbox.bytesToDouble(bytes);
+
+		if (isIntegral()) {
+			if (isSigned())
+				return Toolbox.bytesToSignedInteger(bytes);
+			return Toolbox.bytesToUnsignedInteger(bytes);
+		}
+
+		throw new TpyException("Unable to decode variable of type " + type);
 	}
 }

@@ -1,4 +1,4 @@
-// Copyright (c) 2011, Leif Bruder <leifbruder@googlemail.com>
+// Copyright (c) 2011-2012, Leif Bruder <leifbruder@googlemail.com>
 // 
 // Permission to use, copy, modify, and/or distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -18,11 +18,32 @@ import org.lb.plc.Toolbox;
 public class TestToolbox {
 	byte[] dest;
 	byte[] src;
+	double dblValue1;
+	double dblValue2;
+	byte[] dblValue1AsBytes;
+	byte[] dblValue2AsBytes;
+
+	float fltValue1;
+	float fltValue2;
+	byte[] fltValue1AsBytes;
+	byte[] fltValue2AsBytes;
 
 	@Before
 	public void setUp() throws Exception {
 		dest = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 		src = new byte[] { 20, 30, 40 };
+
+		dblValue1 = 5.628673043832059E175;
+		dblValue2 = 7.695112075816616E218;
+		dblValue1AsBytes = new byte[] { 0x48, 0x65, 0x6c, 0x6f, 0x77, 0x72,
+				0x6c, 0x64 };
+		dblValue2AsBytes = new byte[] { 0x53, 0x70, 0x61, 0x6d, 0x73, 0x70,
+				0x61, 0x6d };
+
+		fltValue1 = 73160903836005280000000000000.0f;
+		fltValue2 = 4360619928626097300000000000.0f;
+		fltValue1AsBytes = new byte[] { 0x48, 0x65, 0x6c, 0x6f };
+		fltValue2AsBytes = new byte[] { 0x53, 0x70, 0x61, 0x6d };
 	}
 
 	@After
@@ -424,14 +445,59 @@ public class TestToolbox {
 		}
 	}
 
-	// TODO
+	@Test
+	public void testBytesToDouble1() {
+		double actual = Toolbox.bytesToDouble(dblValue1AsBytes);
+		double expected = dblValue1;
+		double delta = 0.00000000001;
+		Assert.assertEquals(expected, actual, delta);
+	}
 
-	// public static double bytesToDouble(final byte[] data)
-	// public static long bytesToSignedInteger(byte[] data)
-	// public static long bytesToUnsignedInteger(byte[] data)
-	// public static byte[] floatToBytes(float value)
-	// public static byte[] doubleToBytes(double value)
-	// public static byte[] integerToBytes(long value, int byteSize, boolean
+	@Test
+	public void testBytesToDouble2() {
+		double actual = Toolbox.bytesToDouble(dblValue2AsBytes);
+		double expected = dblValue2;
+		double delta = 0.00000000001;
+		Assert.assertEquals(expected, actual, delta);
+	}
+
+	@Test
+	public void testBytesToDouble3() {
+		double actual = Toolbox.bytesToDouble(fltValue1AsBytes);
+		double expected = fltValue1;
+		double delta = 0.00000000001;
+		Assert.assertEquals(expected, actual, delta);
+	}
+
+	@Test
+	public void testBytesToDouble4() {
+		double actual = Toolbox.bytesToDouble(fltValue2AsBytes);
+		double expected = fltValue2;
+		double delta = 0.00000000001;
+		Assert.assertEquals(expected, actual, delta);
+	}
+
+	@Test
+	public void testFloatToBytes1() {
+		byte[] actual = Toolbox.floatToBytes(fltValue1);
+		byte[] expected = fltValue1AsBytes;
+		Assert.assertArrayEquals(expected, actual);
+	}
+
+	@Test
+	public void testFloatToBytes2() {
+		byte[] actual = Toolbox.floatToBytes(fltValue2);
+		byte[] expected = fltValue2AsBytes;
+		Assert.assertArrayEquals(expected, actual);
+	}
+// TODO
+
+	// public long bytesToSignedInteger(byte[] data)
+	// public long bytesToUnsignedInteger(byte[] data)
+
+	// public byte[] floatToBytes(float value)
+	// public byte[] doubleToBytes(double value)
+	// public byte[] integerToBytes(long value, int byteSize, boolean
 	// signed)
-	// public static byte[] doubleToBytes(double value, int byteSize)
+	// public byte[] doubleToBytes(double value, int byteSize)
 }

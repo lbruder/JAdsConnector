@@ -1,4 +1,4 @@
-// Copyright (c) 2011, Leif Bruder <leifbruder@googlemail.com>
+// Copyright (c) 2011-2012, Leif Bruder <leifbruder@googlemail.com>
 // 
 // Permission to use, copy, modify, and/or distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -26,6 +26,7 @@ public class SimplePlcInterface {
 	private final SimpleAdsInterface conn;
 	private final VariableLocator variableLocator;
 	final VariableObserver observer;
+	private final NotificationHandleCache notificationhandleCache;
 
 	private class Observer implements NotificationObserver {
 		public Observer() {
@@ -37,7 +38,18 @@ public class SimplePlcInterface {
 				return;
 			if (newValues == null) // Connection closed
 				return;
-			// TODO: Which variable(s) was/were changed?
+			for (Long handle : newValues.keySet()) {
+				final Variable var = notificationhandleCache
+						.getVariableByHandle(handle);
+				if (var == null)
+					continue;
+				try {
+					Object newValue = var.decode(newValues.get(handle));
+					observer.variableChanged(var.name, newValue);
+				} catch (Exception ex) {
+					// Swallow for now
+				}
+			}
 		}
 	}
 
@@ -46,6 +58,7 @@ public class SimplePlcInterface {
 			final long timeoutInMs, final VariableLocator variableLocator,
 			final VariableObserver observer) throws IOException {
 		this.variableLocator = variableLocator;
+		this.notificationhandleCache = new NotificationHandleCache();
 		this.observer = observer;
 		this.conn = new SimpleAdsInterface(dest, sourceNetId, sourcePort,
 				destNetId, destPort, timeoutInMs, new Observer());
@@ -118,13 +131,20 @@ public class SimplePlcInterface {
 		conn.write(var.group, var.offset, data);
 	}
 
-	// public void addNotification(final String name, final long checkTimeInMs)
-	// throws IOException, AmsException {
-	// // TODO
-	// }
-	//
-	// public void deleteNotification(final String name) throws IOException,
-	// AmsException {
-	// // TODO
-	// }
+	public void addNotification(final String name, final long checkTimeInMs)
+			throws IOException, AmsException, TpyException {
+		final Variable var = variableLocator.getVariableByName(name);
+		final long notificationHandle = conn.addNotification(var.group,
+				var.offset, var.bitSize / 8, checkTimeInMs);
+		notificationhandleCache.addNotification(var, notificationHandle);
+	}
+
+	public void deleteNotification(final String name) throws IOException,
+			AmsException, TpyException {
+		final Variable var = variableLocator.getVariableByName(name);
+		final long notificationHandle = notificationhandleCache
+				.getHandleByVariable(var);
+		conn.deleteNotification(notificationHandle);
+		notificationhandleCache.deleteNotification(var);
+	}
 }

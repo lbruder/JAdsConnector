@@ -1,4 +1,4 @@
-Copyright (c) 2011, Leif Bruder <leifbruder@googlemail.com>
+Copyright (c) 2011-2012, Leif Bruder <leifbruder@googlemail.com>
 
 Permission to use, copy, modify, and/or distribute this software for any
 purpose with or without fee is hereby granted, provided that the above
@@ -80,21 +80,8 @@ TODO for version 0.5
 - Respect word aligning on BX... systems, endianness for REAL values etc.
 
 
-TODO for version 0.6
-================================
-- Client/Server functionality for high-speed access from C, Perl, Python...
-
-
-TODO for version 0.7
-================================
-- RESTful interface for AJAX :) Semi-asynchronous notification handling
-  (HTML query: Retrieve notifications that arrived since id xxx, wait
-  for max n seconds if none yet)
-
-
-TODO for version 0.8 = RC 1.0
+TODO for version 1.0
 ================================
 - Find someone and/or a PLC to test the system without IP attached
 - Test, test, test.
 - Fix bugs.
-- Release as V1.0
